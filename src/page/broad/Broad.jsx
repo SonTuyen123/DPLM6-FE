@@ -344,34 +344,19 @@ function Broad(props) {
       .catch((e) => console.log(e));
   };
   const handleDeleteUserBoard = (email) => {
-    let data = {
-      email: email,
-      idboard: idBroad,
-      idWorkSpace: idWorkSpace,
-    };
-    DeleteUserInBoard(data)
-      .then((res) => {
-        console.log(res);
-        setShowModal(false);
-        setFlagDeleteUserInBoard(res);
-      })
-      .catch((e) => console.log(e));
+    // let data = {
+    //   email: email,
+    //   idboard: idBroad,
+    //   idWorkSpace: idWorkSpace,
+    // };
+    // DeleteUserInBoard(data)
+    //   .then((res) => {
+    //     console.log(res);
+    //     setShowModal(false);
+    //     setFlagDeleteUserInBoard(res);
+    //   })
+    //   .catch((e) => console.log(e));
   };
-  // const handleDeleteUserBoard = () => {
-  //   if (emailDeleteUser) {
-  //     let data = {
-  //       email: emailDeleteUser,
-  //       idboard: idBroad,
-  //       idWorkSpace: idWorkSpace,
-  //     };
-  //     DeleteUserInBoard(data)
-  //       .then((res) => {
-  //         console.log(res);
-  //         navigate("/");
-  //       })
-  //       .catch((e) => console.log(e));
-  //   }
-  // };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
