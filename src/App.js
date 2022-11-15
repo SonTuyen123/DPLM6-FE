@@ -1,6 +1,6 @@
 import Navbar from "./components/navbar/Navbar";
 
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import Register from "./page/Register/Register";
 import Sidebar from "./components/sidebar/Sidebar";
@@ -14,6 +14,7 @@ import Home from "./page/home/Home";
 import PrivateRoutes from "./hooks/PrivateRoutes";
 import Account from "./components/Account/Account";
 import MemberList from "./components/MemberList/MemberList";
+import Page404 from "./page/404";
 function App() {
   return (
     <div>
@@ -32,6 +33,7 @@ function App() {
               <Route path="/member/:id" element={<MemberList />} />
             </Route>
           </Route>
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </GoogleOAuthProvider>
     </div>
