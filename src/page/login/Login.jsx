@@ -5,7 +5,8 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useGoogleLogin } from "@react-oauth/google";
-import jwt_decode from "jwt-decode"
+import jwt_decode from "jwt-decode";
+import { Loading2 } from "../../components/Loading/Loading2";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -18,6 +19,7 @@ export const Login = () => {
   const [errorsMessage, setErrorsMessage] = useState("");
   const [dataGoogle, setDataGoogle] = useState();
   const [showEye, setShowEye] = useState(false);
+  const [loadingRspw, setLoadingRSPW] = useState(false);
 
   const handleShowPass = () => {
     if (passwordType === "password") {
@@ -80,17 +82,16 @@ export const Login = () => {
             <h2 className="mt-6 text-3xl font-bold text-blue-500">
               Chào mừng bạn trở lại!
             </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              Xin mời đăng nhập
-            </p>
+            <p className="mt-2 text-sm text-gray-600">Xin mời đăng nhập</p>
           </div>
-          <div className="flex flex-row justify-center items-center cursor-pointer" onClick={loginGoogle}>
-            <span>
-              Đăng nhập bằng Google
-            </span>
+          <div
+            className="flex flex-row justify-center items-center cursor-pointer"
+            onClick={loginGoogle}
+          >
+            <span>Đăng nhập bằng Google</span>
             <span className="w-10 h-10 items-center justify-center inline-flex rounded-full font-bold text-lg  text-white cursor-pointer transition ease-in duration-300">
-                {" "}
-                <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"></img>
+              {" "}
+              <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"></img>
             </span>
           </div>
           <div className="flex items-center justify-center space-x-2">
@@ -105,6 +106,7 @@ export const Login = () => {
             }}
             validationSchema={LoginSchema}
             onSubmit={(values) => {
+              setLoadingRSPW(true);
               let data = {
                 email: values.email,
                 password: values.password,
@@ -112,6 +114,7 @@ export const Login = () => {
 
               login(data)
                 .then((res) => {
+                  setLoadingRSPW(false);
                   let data = res.data.message;
                   if (data === "Đăng nhập thất bại! Vui lòng thử lại !") {
                     setErrorsMessage(data);
@@ -130,9 +133,7 @@ export const Login = () => {
                     );
                     localStorage.setItem("token", token);
                     localStorage.setItem("refreshToken", refreshToken);
-                    Swal.fire("Đăng nhập thành công !").then((result) => {
-                      navigate("/");
-                    });
+                    navigate("/");
                   }
                 })
                 .catch((e) => {
@@ -275,23 +276,24 @@ export const Login = () => {
                     </label>
                   </div>
                   <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-medium hover:text-blue-500"
-                    >
+                    <a href="#" className="font-medium hover:text-blue-500">
                       Quên mật khẩu?
                     </a>
                   </div>
                 </div>
                 <div>
-                  <button
-                    onClick={handleSubmit}
-                    type="submit"
-                    className="w-1/2  mx-auto flex justify-center bg-blue-500 text-white p-2  rounded-full tracking-wide
+                  {loadingRspw ? (
+                    <Loading2 />
+                  ) : (
+                    <button
+                      onClick={handleSubmit}
+                      type="submit"
+                      className="w-1/2  mx-auto flex justify-center bg-blue-500 text-white p-2  rounded-full tracking-wide
                           font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
-                  >
-                    Đăng nhập
-                  </button>
+                    >
+                      Đăng nhập
+                    </button>
+                  )}
                 </div>
                 <p className="flex flex-col items-center justify-center mt-10 text-center text-md text-gray-500">
                   <span>Bạn không có tài khoản</span>

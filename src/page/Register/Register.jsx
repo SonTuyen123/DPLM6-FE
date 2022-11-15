@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import register from "../../api/Register";
+import { Loading2 } from "../../components/Loading/Loading2";
 
 const registerSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -23,6 +24,7 @@ export default function Register() {
   const [showEyeConfirmPass, setShowEyeConfirmPass] = useState(false);
   const [errorsMessage, setErrorsMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingRspw, setLoadingRSPW] = useState(false);
 
   const handleShowPass = () => {
     if (passwordType === "password") {
@@ -113,6 +115,7 @@ export default function Register() {
                 }}
                 validationSchema={registerSchema}
                 onSubmit={(values) => {
+                  setLoadingRSPW(true);
                   let data = {
                     email: values.email,
                     name: values.name,
@@ -123,16 +126,13 @@ export default function Register() {
                   setLoading(true);
                   register(data)
                     .then((res) => {
+                      setLoadingRSPW(false);
                       setLoading(false);
                       let data = res.data.message;
                       if (data === "Email đã tồn tại !") {
                         setErrorsMessage(data);
                       } else {
-                        Swal.fire("Đăng ký tài khoản thành công !").then(
-                          (result) => {
-                            navigate("/login");
-                          }
-                        );
+                        navigate("/login");
                       }
                     })
                     .catch((e) => {
@@ -294,14 +294,18 @@ export default function Register() {
                     </div>
 
                     <div>
-                      <button
-                        onClick={handleSubmit}
-                        type="submit"
-                        className="w-1/2 mx-auto flex justify-center bg-blue-500 text-white p-2  rounded tracking-wide
-                          font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
-                      >
-                        Đăng ký
-                      </button>
+                      {loadingRspw ? (
+                        <Loading2 />
+                      ) : (
+                        <button
+                          onClick={handleSubmit}
+                          type="submit"
+                          className="w-1/2 mx-auto flex justify-center bg-blue-500 text-white p-2  rounded tracking-wide
+                                font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
+                        >
+                          Đăng ký
+                        </button>
+                      )}
                     </div>
                     <p className="flex flex-col items-center justify-center mt-10 text-center text-md text-gray-500">
                       <span>Bạn đã có tài khoản rồi !</span>
