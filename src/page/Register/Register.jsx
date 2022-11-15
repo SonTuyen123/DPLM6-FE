@@ -300,7 +300,7 @@ export default function Register() {
                         <button
                           onClick={handleSubmit}
                           type="submit"
-                          className="w-1/2 mx-auto flex justify-center bg-blue-500 text-white p-2  rounded tracking-wide
+                          className="w-1/2 mx-auto flex justify-center bg-blue-500 text-white p-2  rounded-full tracking-wide
                                 font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300"
                         >
                           Đăng ký
